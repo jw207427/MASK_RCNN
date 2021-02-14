@@ -24,6 +24,8 @@ RUN cd cocoapi/PythonAPI && make install
 RUN pip install -U llvmlite==0.32.1
 
 RUN git clone https://github.com/jw207427/MASK_RCNN.git
+RUN cd /MASK_RCNN && git fetch origin 3bc5bc9c1d8a2bc64df864680943abde760123b0
+RUN cd /MASK_RCNN && git reset --hard 3bc5bc9c1d8a2bc64df864680943abde760123b0
 
 RUN chmod -R +w /MASK_RCNN
 RUN pip install -e /MASK_RCNN/
