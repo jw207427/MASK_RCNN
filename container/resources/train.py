@@ -26,7 +26,7 @@ class KangarooDataset(Dataset):
         images_dir = dataset_dir + '/image/'
         annotations_dir = dataset_dir + '/annots/'
         # find all images
-        for filename in listdir(images_dir):
+        for filename in os.listdir(images_dir):
             # extract image id
             image_id = filename[:-4]
             
@@ -102,7 +102,7 @@ if __name__ == '__main__':
     parser.add_argument('--weights', type=str, default=os.environ['SM_CHANNEL_WEIGHTS'])
     
     # hyperparameters
-    parser.add_argument('--epochs', type=int, default=10)
+    parser.add_argument('--epochs', type=int, default=5)
     parser.add_argument('--learning-rate', type=float, default=0.01)
     parser.add_argument('--batch-size', type=int, default=128) 
     parser.add_argument('--num-classes', type=int, default=2)
@@ -152,7 +152,7 @@ if __name__ == '__main__':
     config.display()
     
     # define the model
-    model = MaskRCNN(mode='training', model_dir='kangaroo/model', config=config)
+    model = MaskRCNN(mode='training', model_dir=model_dir, config=config)
     # load weights (mscoco) and exclude the output layers
     model.load_weights(os.path.join(weights_dir, weights_file), 
                        by_name=True, 
@@ -168,6 +168,6 @@ if __name__ == '__main__':
     
     try:
         output = shutil.copy(output_path, model_dir)
-        print(f'model artifacts successfully saved in {output}'
+        print(f'model artifacts successfully saved in {output}')
     except Exception as e:
         print( "Error: %s" % str(e))
